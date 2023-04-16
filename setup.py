@@ -9,5 +9,6 @@ setup(
         'flask',
         'requests',
         'pytest',
+        'apscheduler',
     ],
 )

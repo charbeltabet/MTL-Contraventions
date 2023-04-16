@@ -17,12 +17,6 @@ class Violation(object):
         self.status_date = status_date
         self.category = category
     
-    def save(self):
-        if self.id is None:
-            return self.insert()
-        else:
-            return self.update()
-    
     def insert(self):
         db = get_db()
         cursor = db.execute(
@@ -45,8 +39,8 @@ class Violation(object):
             RETURNING *
             """,
             (
-                self.business_id,
                 self.remote_id,
+                self.business_id,
                 self.date,
                 self.description,
                 self.address,
@@ -65,12 +59,28 @@ class Violation(object):
         db.commit()
         return self
 
-    def update(self):
+    @classmethod
+    def find_by_remote_id(cls, remote_id):
+        db = get_db()
+        cursor = db.execute(
+            """
+            SELECT * FROM violations
+            WHERE remote_id = ?
+            """,
+            (remote_id,)
+        )
+        row = cursor.fetchone()
+        cursor.close()
+        if row is None:
+            return None
+        return cls.from_row(row)
+
+    @classmethod
+    def update_by_remote_id(cls, **kwargs):
         db = get_db()
         cursor = db.execute(
             """
             UPDATE violations SET
-                remote_id = ?,
                 business_id = ?,
                 date = ?,
                 description = ?,
@@ -83,61 +93,52 @@ class Violation(object):
                 status = ?,
                 status_date = ?,
                 category = ?
-            WHERE id = ?
+            WHERE remote_id = ?
+            RETURNING *
             """,
             (
-                self.business_id,
-                self.remote_id,
-                self.date,
-                self.description,
-                self.address,
-                self.judgement_date,
-                self.establishment,
-                self.amount,
-                self.owner,
-                self.city,
-                self.status,
-                self.status_date,
-                self.category,
-                self.id
+                kwargs['business_id'],
+                kwargs['date'],
+                kwargs['description'],
+                kwargs['address'],
+                kwargs['judgement_date'],
+                kwargs['establishment'],
+                kwargs['amount'],
+                kwargs['owner'],
+                kwargs['city'],
+                kwargs['status'],
+                kwargs['status_date'],
+                kwargs['category'],
+                kwargs['remote_id'],
             )
-        )
-        cursor.close()
-        db.commit()
-        return self
-    
-    @classmethod
-    def find_by_id(cls, id):
-        db = get_db()
-        cursor = db.execute(
-            """
-            SELECT * FROM violations
-            WHERE id = ?
-            """,
-            (id,)
         )
         row = cursor.fetchone()
         cursor.close()
-        if row is None:
-            return None
-        violation =  Violation(
-            id = row['id'],
-            remote_id=row['remote_id'],
-            business_id=row['business_id'],
-            date=row['date'],
-            description=row['description'],
-            address=row['address'],
-            judgement_date=row['judgement_date'],
-            establishment=row['establishment'],
-            amount=row['amount'],
-            owner=row['owner'],
-            city=row['city'],
-            status=row['status'],
-            status_date=row['status_date'],
-            category=row['category']
-        )
-        return violation
-      
+        db.commit()
+        return cls.from_row(row)
+    
+    @classmethod
+    def insert_or_update_by_remote_id(cls, **kwargs):
+        violation = cls.find_by_remote_id(kwargs['remote_id'])
+        if violation is None:
+            return cls(**kwargs).insert()
+
+        if (
+            violation.business_id != kwargs['business_id'] or
+            violation.date != kwargs['date'] or
+            violation.description != kwargs['description'] or
+            violation.address != kwargs['address'] or
+            violation.judgement_date != kwargs['judgement_date'] or
+            violation.establishment != kwargs['establishment'] or
+            violation.amount != kwargs['amount'] or
+            violation.owner != kwargs['owner'] or
+            violation.city != kwargs['city'] or
+            violation.status != kwargs['status'] or
+            violation.status_date != kwargs['status_date'] or
+            violation.category != kwargs['category']
+        ):
+            return cls.update_by_remote_id(**kwargs)
+
     @classmethod
     def all(self):
         db = get_db()
