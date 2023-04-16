@@ -16,3 +16,5 @@ build/
 pytest/lib
 pytest/bin
 pytest/pyvenv.cfg
+
+run/
