@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="landing-page">
+  <div class="landing-page-section">
+    <div>
+      <h1>
+        <a href="{{ url_for('contravenants.get_contravenants') }}">Contravenants</a>
+      </h1>
+      <div class="description">
+        <p>
+          Cherchez des contraventions par nom d'établissement, nom de propriétaire ou adresse.
+        </p>
+      </div>
+      <form action="{{ url_for('contravenants.get_contravenants') }}" method="get">
+        <div class="form-group">
+          <label for="owner">Owner</label>
+          <input type="text" class="form-control" id="owner" name="owner">
+        </div>
+        <div>
+          <label for="establishment">Establishment</label>
+          <input type="text" class="form-control" id="establishment" name="establishment">
+        </div>
+        <div>
+          <label for="road">Rue ou address</label>
+          <input type="text" class="form-control" id="address" name="address">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+    </div>
+    <div>
+      <h1>
+        Recherche de contraventions entre 2 dates:
+      </h1>
+      <form id="date-search-form">
+        <div  class="form-group">
+          <label for="start_date">Du</label>
+          <input type="date" class="form-control" id="start_date" name="du">
+        </div>
+        <div class="form-group">
+          <label for="end_date">Au</label>
+          <input type="date" class="form-control" id="end_date" name="au">
+        </div>
+        <div>
+          <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+      </form>
+      <div id="date-search-results"></div>
+    </div>
+  </div>
+  <div class="landing-page-section">
+    <h1>Etablisments Contravenants</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Nom</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for establishment_name in establishments %}
+          <tr>
+            <td><a href="#" class="establisment-name">{{ establishment_name }}</a></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="landing-page-section">
+    <div id="etablisment-contraventions"></div>
+  </div>
+</div>
+<script>
+$(document).ready(function() {
+  $('#date-search-form').submit(function(event) {
+    event.preventDefault();
+    
+    var start_date = $('#start_date').val();
+    var end_date = $('#end_date').val();
+    
+    $.ajax({
+      url: '/contravenants',
+      method: 'GET',
+      data: {
+        du: start_date,
+        au: end_date
+      },
+      success: function(response) {
+        if (response.length === 0) {
+          $('#date-search-results').html('<p>Aucune contravention trouvée</p>');
+          return;
+        }
+        var tableHtml = '<table><thead><tr><th>Nom</th><th>Nombre de contraventions</th></tr></thead>';
+
+        for (var i = 0; i < response.length; i++) {
+          var violation = response[i];
+          tableHtml += '<tr><td>' + violation.establishment + '</td><td>' + violation.violations_count + '</td><tr>';
+        }
+        tableHtml += '</table>';
+        $('#date-search-results').html(tableHtml);
+      }
+    });
+  });
+
+  $('.establisment-name').click(function(event) {
+    event.preventDefault();
+    var establishment_name = $(this).text();
+    console.log(establishment_name);
+    $.ajax({
+      url: `/contravenants`,
+      method: 'GET',
+      contentType: 'application/json',
+      data: {
+        establishment: establishment_name
+      },
+      success: function(response) {
+        var table = '<table><thead><tr><th>Address</th><th>Amount</th><th>Business ID</th><th>Category</th><th>City</th><th>Date</th><th>Description</th><th>Establishment</th><th>ID</th><th>Judgement Date</th><th>Owner</th><th>Remote ID</th><th>Status</th><th>Status Date</th></tr></thead>';
+        for (var i = 0; i < response.length; i++) {
+          var violation = response[i];
+          table += '<tr><td>' + violation.address + '</td><td>' + violation.amount + '</td><td>' + violation.business_id + '</td><td>' + violation.category + '</td><td>' + violation.city + '</td><td>' + violation.date + '</td><td>' + violation.description + '</td><td>' + violation.establishment + '</td><td>' + violation.id + '</td><td>' + violation.judgement_date + '</td><td>' + violation.owner + '</td><td>' + violation.remote_id + '</td><td>' + violation.status + '</td><td>' + violation.status_date + '</td></tr>';
+        }
+        table += '</table>';
+        $('#etablisment-contraventions').html(table);
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

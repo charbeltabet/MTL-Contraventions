@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block content %}
+  <h3>
+    Resultats de la recherche des contrataventions pour:
+      <ul>
+          {% if request.args.get('owner') %}
+            <li>
+                Proprietaire: {{ request.args.get('owner') }}
+            </li>
+          {% endif %}
+          {% if request.args.get('establishment') %}
+            <li>
+                Etablissement: {{ request.args.get('establishment') }}
+            </li>
+          {% endif %}
+          {% if request.args.get('address') %}
+            <li>
+                Addresse: {{ request.args.get('address') }}
+            </li>
+          {% endif %}
+      </ul>
+  </h3>
+  <div>
+    {% if violations %}
+      <h2>Contraventions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Establishment</th>
+            <th>Proprietaire</th>
+            <th>Address</th>
+            <th>Description</th>
+            <th>Montant</th>
+            <th>Categorie</th>
+            <th>Statut</th>
+            <th>Date de statut</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for violation in violations %}
+            <tr>
+              <td>{{ violation.establishment }}</td>
+              <td>{{ violation.owner }}</td>
+              <td>{{ violation.address }}</td>
+              <td>{{ violation.description }}</td>
+              <td>{{ violation.amount }}</td>
+              <td>{{ violation.category }}</td>
+              <td>{{ violation.status }}</td>
+              <td>{{ violation.status_date }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  </div>
+{% endblock %}

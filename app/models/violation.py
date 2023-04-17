@@ -150,6 +150,52 @@ class Violation(object):
         rows = cursor.fetchall()
         cursor.close()
         return [self.from_row(row) for row in rows]
+    
+    @classmethod
+    def all_establishments(cls):
+        db = get_db()
+        cursor = db.execute(
+            """
+                SELECT distinct(establishment) FROM violations
+                ORDER BY establishment
+            """
+        )
+        rows = cursor.fetchall()
+        cursor.close()
+        return [row[0] for row in rows]
+
+    @classmethod
+    def search(cls, **kwargs):
+        stripped_kwargs = {k: str(v).strip() for k, v in kwargs.items() if v and str(v).strip()}
+        if not stripped_kwargs:
+            return []
+
+        db = get_db()
+        cursor = db.execute(
+            "SELECT * FROM violations WHERE " + " OR ".join([f"{k} LIKE ?" for k in stripped_kwargs.keys()]),
+            tuple(f"%{v}%" for v in stripped_kwargs.values())
+        )
+        results = cursor.fetchall()
+        cursor.close()
+        return [cls.from_row(row) for row in results]
+
+    @classmethod
+    def search_between_dates(cls, start_date, end_date):
+        if start_date > end_date:
+            return []
+        db = get_db()
+        cursor = db.execute(
+            """
+                SELECT establishment, count(*) AS violations_count FROM violations
+                WHERE date BETWEEN ? AND ?
+                GROUP BY establishment
+                ORDER BY count(*) DESC
+            """,
+            (start_date, end_date)
+        )
+        results = [dict(row) for row in cursor.fetchall()]
+        cursor.close()
+        return results
 
     @classmethod
     def count(self):
