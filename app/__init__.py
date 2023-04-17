@@ -22,8 +22,8 @@ def create_app(test_config=None):
     db.init_app(app)
 
     # Register blueprints
-    from . import contravenants
-    app.register_blueprint(contravenants.bp)
+    from . import contrevenants
+    app.register_blueprint(contrevenants.bp)
 
     # Schedule jobs
     schedule_jobs(app)

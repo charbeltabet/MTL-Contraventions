@@ -4,14 +4,14 @@
   <div class="landing-page-section">
     <div>
       <h1>
-        <a href="{{ url_for('contravenants.get_contravenants') }}">Contravenants</a>
+        <a href="{{ url_for('contrevenants.get_contrevenants') }}">contrevenants</a>
       </h1>
       <div class="description">
         <p>
           Cherchez des contraventions par nom d'établissement, nom de propriétaire ou adresse.
         </p>
       </div>
-      <form action="{{ url_for('contravenants.get_contravenants') }}" method="get">
+      <form action="{{ url_for('contrevenants.get_contrevenants') }}" method="get">
         <div class="form-group">
           <label for="owner">Owner</label>
           <input type="text" class="form-control" id="owner" name="owner">
@@ -50,7 +50,7 @@
     </div>
   </div>
   <div class="landing-page-section">
-    <h1>Etablisments Contravenants</h1>
+    <h1>Etablisments contrevenants</h1>
     <table>
       <thead>
         <tr>
@@ -79,7 +79,7 @@ $(document).ready(function() {
     var end_date = $('#end_date').val();
     
     $.ajax({
-      url: '/contravenants',
+      url: '/contrevenants',
       method: 'GET',
       data: {
         du: start_date,
@@ -107,7 +107,7 @@ $(document).ready(function() {
     var establishment_name = $(this).text();
     console.log(establishment_name);
     $.ajax({
-      url: `/contravenants`,
+      url: `/contrevenants`,
       method: 'GET',
       contentType: 'application/json',
       data: {
