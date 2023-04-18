@@ -1,4 +1,5 @@
 from app.db import get_db
+from datetime import datetime
 
 class Violation(object):
     def __init__(self, remote_id, business_id, date, description, address, judgement_date, establishment, amount, owner, city, status, status_date, category, id=None):
@@ -233,16 +234,16 @@ class Violation(object):
             id = row['id'],
             remote_id=row['remote_id'],
             business_id=row['business_id'],
-            date=row['date'],
+            date=row['date'].strftime("%d-%m-%Y"),
             description=row['description'],
             address=row['address'],
-            judgement_date=row['judgement_date'],
+            judgement_date=row['judgement_date'].strftime("%d-%m-%Y"),
             establishment=row['establishment'],
             amount=row['amount'],
             owner=row['owner'],
             city=row['city'],
             status=row['status'],
-            status_date=row['status_date'],
+            status_date=row['status_date'].strftime("%d-%m-%Y"),
             category=row['category']
         )
  

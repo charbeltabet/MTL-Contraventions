@@ -1,50 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
-  <h3>
+  <p>
     Resultats de la recherche des contrataventions pour:
       <ul>
           {% if request.args.get('owner') %}
             <li>
-                Proprietaire: {{ request.args.get('owner') }}
+                Propriétaire: {{ request.args.get('owner') }}
             </li>
           {% endif %}
           {% if request.args.get('establishment') %}
             <li>
-                Etablissement: {{ request.args.get('establishment') }}
+                Établissement: {{ request.args.get('establishment') }}
             </li>
           {% endif %}
           {% if request.args.get('address') %}
             <li>
-                Addresse: {{ request.args.get('address') }}
+                Adresse: {{ request.args.get('address') }}
             </li>
           {% endif %}
       </ul>
-  </h3>
+  </p>
   <div>
     {% if violations %}
-      <h2>Contraventions</h2>
-      <table>
+      <table class="table table-striped">
         <thead>
           <tr>
-            <th>Establishment</th>
-            <th>Proprietaire</th>
-            <th>Address</th>
+            <th>ID</th>
+            <th>ID Entreprise</th>
+            <th>Catégorie</th>
             <th>Description</th>
+            <th>Adresse</th>
+            <th>Ville</th>
+            <th>Établissement</th>
+            <th>Propriétaire</th>
             <th>Montant</th>
-            <th>Categorie</th>
+            <th>Date</th>
+            <th>Date de Jugement</th>
             <th>Statut</th>
-            <th>Date de statut</th>
+            <th>Date de Statut</th>
           </tr>
         </thead>
         <tbody>
           {% for violation in violations %}
             <tr>
+              <td>{{ violation.remote_id }}</td>
+              <td>{{ violation.business_id }}</td>
+              <td>{{ violation.category }}</td>
+              <td>{{ violation.description }}</td>
+              <td>{{ violation.address }}</td>
+              <td>{{ violation.city }}</td>
               <td>{{ violation.establishment }}</td>
               <td>{{ violation.owner }}</td>
-              <td>{{ violation.address }}</td>
-              <td>{{ violation.description }}</td>
               <td>{{ violation.amount }}</td>
-              <td>{{ violation.category }}</td>
+              <td>{{ violation.date }}</td>
+              <td>{{ violation.judgement_date }}</td>
               <td>{{ violation.status }}</td>
               <td>{{ violation.status_date }}</td>
             </tr>

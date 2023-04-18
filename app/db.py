@@ -10,6 +10,7 @@ def get_db():
             detect_types=sqlite3.PARSE_DECLTYPES
         )
         g.db.row_factory = sqlite3.Row
+        g.db.execute("PRAGMA encoding='UTF-8'")
 
     return g.db
 

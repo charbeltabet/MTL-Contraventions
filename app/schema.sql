@@ -14,4 +14,5 @@ CREATE TABLE IF NOT EXISTS violations (
   status_date DATE NOT NULL,
   category TEXT NOT NULL
 );
+PRAGMA encoding='UTF-8';
 CREATE UNIQUE INDEX IF NOT EXISTS idx_violations_remote_id ON violations (remote_id);

@@ -1,4 +1,4 @@
-import csv, requests
+import io, csv, requests
 from app.models.violation import Violation
 
 def perform_import_violations(app):
@@ -13,10 +13,10 @@ class ImportViolations():
     def perform(self):
         response = requests.get(self.VIOLATIONS_URL)
         response.raise_for_status()
-        violations = csv.DictReader(response.text.splitlines())
+        violations = csv.DictReader(io.StringIO(response.content.decode('utf-8')))
         with self.app.app_context():
             for violation_response in violations:
-                violation = Violation.insert_or_update_by_remote_id(
+                Violation.insert_or_update_by_remote_id(
                     remote_id = violation_response['id_poursuite'],
                     business_id = violation_response['business_id'],
                     date = self._format_date(violation_response['date']),
@@ -31,7 +31,6 @@ class ImportViolations():
                     status_date = self._format_date(violation_response['date_statut']),
                     category = violation_response['categorie']
                 )
-                self._log_success(violation)
     
     def _format_date(self, date):
         return date[:4] + "-" + date[4:6] + "-" + date[6:]
