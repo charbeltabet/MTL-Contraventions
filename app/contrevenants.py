@@ -3,6 +3,10 @@ from app.models.violation import Violation
 
 bp = Blueprint('contrevenants', __name__, url_prefix='/')
 
+@bp.route('/doc')
+def doc():
+    return render_template('contrevenants/doc.html')
+
 @bp.route('/')
 def index():
     return render_template('contrevenants/index.html', establishments=Violation.all_establishments())

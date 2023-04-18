@@ -1,0 +1,87 @@
+#%RAML 1.0
+title: Contrevenants API
+baseUri: http://localhost:5000
+version: v1
+
+/contrevenants:
+  get:
+    description: Returns a sorted list of establishments and their violations between the given dates.
+    queryParameters:
+      du:
+        description: The start date to search from.
+        type: date
+        required: true
+      au:
+        description: The end date to search until.
+        type: date
+        required: true
+    responses:
+      200:
+        body:
+          application/json:
+              example: |
+                [
+                  {
+                    "establishment": "RESTAURANT BUFFALO BILL WINGS",
+                    "violations_count": 11
+                  },
+                  {
+                    "establishment": "PIZZA EXPRESSO",
+                    "violations_count": 9
+                  },
+                  {
+                    "establishment": "RAM SWEET SHOP",
+                    "violations_count": 8
+                  }
+                ]
+      400:
+        body:
+          text/plain:
+            example: |
+              Bad request
+
+
+  /search:
+    get:
+      description: Returns a list of violations matching the given search criteria. At least one search parameter must be provided.
+      queryParameters:
+        establishment:
+          description: The establishment name to search for.
+          type: string
+          required: false
+        owner:
+          description: The owner name to search for.
+          type: string
+          required: false
+        address:
+          description: The address to search for.
+          type: string
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "address": "2020A Rue Crescent, Montréal, Québec",
+                    "amount": 250,
+                    "business_id": 13946,
+                    "category": "Restaurant",
+                    "city": "Montréal",
+                    "date": "28-11-2019",
+                    "description": "Une description de la contravention",
+                    "establishment": "AL AMINE",
+                    "id": 2197,
+                    "judgement_date": "09-12-2019",
+                    "owner": "9071-0328 QUEBEC INC.",
+                    "remote_id": 7256,
+                    "status": "Ouvert",
+                    "status_date": "29-03-1999"
+                  }
+                ]
+        400:
+          body:
+            text/plain:
+              example: |
+                Bad request
