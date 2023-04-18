@@ -181,7 +181,7 @@ class Violation(object):
         return [cls.from_row(row) for row in results]
 
     @classmethod
-    def search_between_dates(cls, start_date, end_date):
+    def count_by_establishment_between_dates(cls, start_date, end_date):
         if start_date > end_date:
             return []
         db = get_db()
@@ -193,6 +193,20 @@ class Violation(object):
                 ORDER BY count(*) DESC
             """,
             (start_date, end_date)
+        )
+        results = [dict(row) for row in cursor.fetchall()]
+        cursor.close()
+        return results
+    
+    @classmethod
+    def count_by_establishment(cls):
+        db = get_db()
+        cursor = db.execute(
+            """
+                SELECT establishment, count(*) AS violations_count FROM violations
+                GROUP BY establishment
+                ORDER BY count(*) DESC
+            """
         )
         results = [dict(row) for row in cursor.fetchall()]
         cursor.close()

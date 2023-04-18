@@ -13,13 +13,14 @@ def index():
 
 @bp.route('/contrevenants')
 def get_contrevenants():
-    if not request.args.get('du') or not request.args.get('au'):
-        return "Bad request", 400
-
-    return Violation.search_between_dates(
-        start_date=request.args.get('du'),
-        end_date=request.args.get('au'),
-    )
+    if request.args.get('du') and request.args.get('au'):
+        return Violation.count_by_establishment_between_dates(
+            start_date=request.args.get('du'),
+            end_date=request.args.get('au'),
+        )
+    elif not request.args.get('du') and not request.args.get('au'):
+        return Violation.count_by_establishment()
+    return "Bad request", 400
 
 @bp.route('/contrevenants/search')
 def search_contrevenants():

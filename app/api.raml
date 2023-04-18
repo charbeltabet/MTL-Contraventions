@@ -5,16 +5,16 @@ version: v1
 
 /contrevenants:
   get:
-    description: Returns a sorted list of establishments and their violations between the given dates.
+    description: Returns an ordered list in descending order of establishments and their violations between the given dates. If dates are not provided, the list of all establishments with violations and their counts of violations is returned.
     queryParameters:
       du:
         description: The start date to search from.
         type: date
-        required: true
+        required: false
       au:
         description: The end date to search until.
         type: date
-        required: true
+        required: false
     responses:
       200:
         body:
