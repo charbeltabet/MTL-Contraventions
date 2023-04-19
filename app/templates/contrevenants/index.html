@@ -74,13 +74,14 @@ $(document).ready(function() {
     $.ajax({
       url: '/contrevenants',
       method: 'GET',
+      contentType: 'application/json',
       data: {
         du: start_date,
         au: end_date
       },
       success: function(response) {
         if (response.length === 0) {
-          $('#date-search-results').html('<p>Aucune contravention trouvée</p>');
+          $('#results').html('<p>Aucune contravention trouvée</p>');
           return;
         }
         var tableHtml = '<table class="table"><thead><tr><th>Nom</th><th>Nombre de contraventions</th></tr></thead>';

@@ -40,7 +40,7 @@ def search_contrevenants():
 
 def violations_response(violations, content_type):
     if content_type == 'application/json':
-        return jsonify([violation.to_dict() for violation in violations])
+        return violations
     elif content_type == 'application/xml':
         xml = dicttoxml([violation.to_dict() for violation in violations])
         return Response(xml, content_type='application/xml')
