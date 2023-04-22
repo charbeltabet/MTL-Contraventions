@@ -2,3 +2,5 @@ flask
 bcrypt
 flask_login
 dicttoxml
+apscheduler
+requests
