@@ -1,0 +1,37 @@
+GET http://127.0.0.1:5000/contrevenants
+content-type: application/json
+
+###
+
+GET http://127.0.0.1:5000/contrevenants?du=2018-01-01&au=2020-01-31
+content-type: application/json
+
+###
+
+GET http://127.0.0.1:5000/contrevenants?du=2018-01-01&au=2019-01-31
+content-type: text/csv
+
+###
+
+GET http://127.0.0.1:5000/contrevenants?du=2018-01-01&au=2019-01-31
+content-type: text/csv
+
+###
+
+GET http://127.0.0.1:5000/contrevenants/search?establishment=boustan
+content-type: application/xml
+
+###
+
+GET http://127.0.0.1:5000/contrevenants/search?establishment=boustan
+content-type: text/csv
+
+###
+
+GET http://127.0.0.1:5000/contrevenants/search?establishment=boustan
+content-type: application/json
+
+###
+
+GET http://127.0.0.1:5000/contrevenants/search?address=maurice&owner=LASALLE&establishment=patisserie
+content-type: text/csv

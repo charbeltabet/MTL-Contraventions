@@ -184,24 +184,64 @@ pre code {
     "violations_count": 8
   }
 ]
+</code></pre></div><p><strong>Media type</strong>: application/xml</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;root&gt;
+  &lt;item type="dict"&gt;
+    &lt;establishment type="str"&gt;LA BELLE PROVINCE&lt;/establishment&gt;
+    &lt;violations_count type="int"&gt;9&lt;/violations_count&gt;
+  &lt;/item&gt;
+  &lt;item type="dict"&gt;
+    &lt;establishment type="str"&gt;MARCHE BOTINDA&lt;/establishment&gt;
+    &lt;violations_count type="int"&gt;8&lt;/violations_count&gt;
+  &lt;/item&gt;
+  &lt;item type="dict"&gt;
+    &lt;establishment type="str"&gt;BUFFALO BILL WINGS&lt;/establishment&gt;
+    &lt;violations_count type="int"&gt;8&lt;/violations_count&gt;
+  &lt;/item&gt;
+&lt;/root&gt;
+</code></pre></div><p><strong>Media type</strong>: text/csv</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>establishment,violations_count
+LA BELLE PROVINCE,9
+MARCHE BOTINDA,8
+BUFFALO BILL WINGS,8
 </code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Media type</strong>: text/plain</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>Bad request
 </code></pre></div></div></div></div></div></div></div></div><div class="panel panel-white resource-modal"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_contrevenants_search"><span class="parent">/contrevenants</span>/search</a> <span class="methods"><a href="#contrevenants_search_get"><span class="badge badge_get">get</span></a></span></h4></div><div id="panel_contrevenants_search" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#contrevenants_search_get'" class="list-group-item"><span class="badge badge_get">get</span><div class="method_description"><p>Returns a list of violations matching the given search criteria. At least one search parameter must be provided.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="contrevenants_search_get"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get</span> <span class="parent">/contrevenants</span>/search</h4></div><div class="modal-body"><div class="alert alert-info"><p>Returns a list of violations matching the given search criteria. At least one search parameter must be provided.</p></div><ul class="nav nav-tabs"><li class="active"><a href="#contrevenants_search_get_request" data-toggle="tab">Request</a></li><li><a href="#contrevenants_search_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="contrevenants_search_get_request"><h3>Query Parameters</h3><ul><li><strong>establishment</strong>: <em>(string)</em><p>The establishment name to search for.</p></li><li><strong>owner</strong>: <em>(string)</em><p>The owner name to search for.</p></li><li><strong>address</strong>: <em>(string)</em><p>The address to search for.</p></li></ul></div><div class="tab-pane" id="contrevenants_search_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><h3>Body</h3><p><strong>Media type</strong>: application/json</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>[
   {
-    "address": "2020A Rue Crescent, Montréal, Québec",
-    "amount": 250,
-    "business_id": 13946,
+    "address": "2020A Rue Crescent, Montr&#92;u00e9al, Qu&#92;u00e9bec",
+    "amount": 3000,
+    "business_id": 103572,
     "category": "Restaurant",
-    "city": "Montréal",
-    "date": "28-11-2019",
-    "description": "Une description de la contravention",
-    "establishment": "AL AMINE",
-    "id": 2197,
-    "judgement_date": "09-12-2019",
-    "owner": "9071-0328 QUEBEC INC.",
-    "remote_id": 7256,
-    "status": "Ouvert",
-    "status_date": "29-03-1999"
+    "city": "Montr&#92;u00e9al",
+    "date": "03-09-2014",
+    "description": "Nul ne peut pr&#92;u00e9parer, d&#92;u00e9tenir en vue de la vente ou de la fourniture de services moyennant r&#92;u00e9mun&#92;u00e9ration, recevoir, acheter pour fins de revente, mettre en vente ou en d&#92;u00e9p&#92;u00f4t, vendre, donner &#92;u00e0 des fins promotionnelles, transporter, faire transporter ou accepter pour transport, tout produit destin&#92;u00e9 &#92;u00e0 la consommation humaine qui est impropre &#92;u00e0 cette consommation, qui est alt&#92;u00e9r&#92;u00e9 de mani&#92;u00e8re &#92;u00e0 le rendre impropre &#92;u00e0 cette consommation, dont l&#39;innocuit&#92;u00e9 n&#39;est pas assur&#92;u00e9e pour cette consommation ou qui n&#39;est pas conforme aux exigences de la pr&#92;u00e9sente loi et des r&#92;u00e8glements.",
+    "establishment": "LE BOUSTAN",
+    "id": 3353,
+    "judgement_date": "14-10-2016",
+    "owner": "9257-1348 QUEBEC INC.",
+    "remote_id": 2685,
+    "status": "Ferm&#92;u00e9 changement d&#39;exploitant",
+    "status_date": "17-10-2016"
   }
 ]
+</code></pre></div><p><strong>Media type</strong>: application/xml</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+&lt;root&gt;
+  &lt;item type="dict"&gt;
+    &lt;id type="int"&gt;3353&lt;/id&gt;
+    &lt;remote_id type="int"&gt;2685&lt;/remote_id&gt;
+    &lt;business_id type="int"&gt;103572&lt;/business_id&gt;
+    &lt;date type="str"&gt;03-09-2014&lt;/date&gt;
+    &lt;description type="str"&gt;Nul ne peut préparer, détenir en vue de la vente ou de la fourniture de services moyennant rémunération, recevoir, acheter pour fins de revente, mettre en vente ou en dépôt, vendre, donner à des fins promotionnelles, transporter, faire transporter ou accepter pour transport, tout produit destiné à la consommation humaine qui est impropre à cette consommation, qui est altéré de manière à le rendre impropre à cette consommation, dont l&amp;apos;innocuité n&amp;apos;est pas assurée pour cette consommation ou qui n&amp;apos;est pas conforme aux exigences de la présente loi et des règlements.&lt;/description&gt;
+    &lt;address type="str"&gt;2020A Rue Crescent, Montréal, Québec&lt;/address&gt;
+    &lt;judgement_date type="str"&gt;14-10-2016&lt;/judgement_date&gt;
+    &lt;establishment type="str"&gt;LE BOUSTAN&lt;/establishment&gt;
+    &lt;amount type="int"&gt;3000&lt;/amount&gt;
+    &lt;owner type="str"&gt;9257-1348 QUEBEC INC.&lt;/owner&gt;
+    &lt;city type="str"&gt;Montréal&lt;/city&gt;
+    &lt;status type="str"&gt;Fermé changement d&amp;apos;exploitant&lt;/status&gt;
+    &lt;status_date type="str"&gt;17-10-2016&lt;/status_date&gt;
+    &lt;category type="str"&gt;Restaurant&lt;/category&gt;
+  &lt;/item&gt;
+&lt;/root&gt;
+</code></pre></div><p><strong>Media type</strong>: text/csv</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>id,remote_id,business_id,date,description,address,judgement_date,establishment,amount,owner,city,status,status_date,category
+1,2645,219,14-05-2015,"Le produit altérable à la chaleur à l&#39;exception des fruits et légumes frais entiers doit être refroidi sans retard et maintenu constamment à une température interne et ambiante ne dépassant pas 4C jusqu&#39;à sa livraison au consommateur, sauf pendant le temps requis pour l&#39;application d&#39;un procédé de fabrication ou d&#39;un traitement reconnu en industrie alimentaire et qui exige une plus haute température.","8591 Boul. Maurice-Duplessis, Montréal, Québec",29-03-2016,BOULANGERIE ET PATISSERIE LASALLE R.D.P. INC.,1000,BOULANGERIE ET PATISSERIE LASALLE R.D.P. INC.,Montréal,Ouvert,10-03-1993,Boulangerie
 </code></pre></div><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><h3>Body</h3><p><strong>Media type</strong>: text/plain</p><p><strong>Type</strong>: any</p><p><strong>Example</strong>:</p><div class="examples"><pre><code>Bad request
 </code></pre></div></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#contrevenants">/contrevenants</a></li></ul></div></div></div></div></body></html>

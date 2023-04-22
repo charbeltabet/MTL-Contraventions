@@ -1,0 +1,135 @@
+#%RAML 1.0
+title: Contrevenants API
+baseUri: http://localhost:5000
+version: v1
+
+/contrevenants:
+  get:
+    description: Returns an ordered list in descending order of establishments and their violations between the given dates. If dates are not provided, the list of all establishments with violations and their counts of violations is returned.
+    queryParameters:
+      du:
+        description: The start date to search from.
+        type: date
+        required: false
+      au:
+        description: The end date to search until.
+        type: date
+        required: false
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "establishment": "RESTAURANT BUFFALO BILL WINGS",
+                  "violations_count": 11
+                },
+                {
+                  "establishment": "PIZZA EXPRESSO",
+                  "violations_count": 9
+                },
+                {
+                  "establishment": "RAM SWEET SHOP",
+                  "violations_count": 8
+                }
+              ]
+          application/xml:
+            example: |
+              <?xml version="1.0" encoding="UTF-8" ?>
+              <root>
+                <item type="dict">
+                  <establishment type="str">LA BELLE PROVINCE</establishment>
+                  <violations_count type="int">9</violations_count>
+                </item>
+                <item type="dict">
+                  <establishment type="str">MARCHE BOTINDA</establishment>
+                  <violations_count type="int">8</violations_count>
+                </item>
+                <item type="dict">
+                  <establishment type="str">BUFFALO BILL WINGS</establishment>
+                  <violations_count type="int">8</violations_count>
+                </item>
+              </root>
+          text/csv:
+            example: |
+              establishment,violations_count
+              LA BELLE PROVINCE,9
+              MARCHE BOTINDA,8
+              BUFFALO BILL WINGS,8
+      400:
+        body:
+          text/plain:
+            example: |
+              Bad request
+
+
+  /search:
+    get:
+      description: Returns a list of violations matching the given search criteria. At least one search parameter must be provided.
+      queryParameters:
+        establishment:
+          description: The establishment name to search for.
+          type: string
+          required: false
+        owner:
+          description: The owner name to search for.
+          type: string
+          required: false
+        address:
+          description: The address to search for.
+          type: string
+          required: false
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                [
+                  {
+                    "address": "2020A Rue Crescent, Montr\u00e9al, Qu\u00e9bec",
+                    "amount": 3000,
+                    "business_id": 103572,
+                    "category": "Restaurant",
+                    "city": "Montr\u00e9al",
+                    "date": "03-09-2014",
+                    "description": "Nul ne peut pr\u00e9parer, d\u00e9tenir en vue de la vente ou de la fourniture de services moyennant r\u00e9mun\u00e9ration, recevoir, acheter pour fins de revente, mettre en vente ou en d\u00e9p\u00f4t, vendre, donner \u00e0 des fins promotionnelles, transporter, faire transporter ou accepter pour transport, tout produit destin\u00e9 \u00e0 la consommation humaine qui est impropre \u00e0 cette consommation, qui est alt\u00e9r\u00e9 de mani\u00e8re \u00e0 le rendre impropre \u00e0 cette consommation, dont l'innocuit\u00e9 n'est pas assur\u00e9e pour cette consommation ou qui n'est pas conforme aux exigences de la pr\u00e9sente loi et des r\u00e8glements.",
+                    "establishment": "LE BOUSTAN",
+                    "id": 3353,
+                    "judgement_date": "14-10-2016",
+                    "owner": "9257-1348 QUEBEC INC.",
+                    "remote_id": 2685,
+                    "status": "Ferm\u00e9 changement d'exploitant",
+                    "status_date": "17-10-2016"
+                  }
+                ]
+            application/xml:
+              example: |
+                <?xml version="1.0" encoding="UTF-8" ?>
+                <root>
+                  <item type="dict">
+                    <id type="int">3353</id>
+                    <remote_id type="int">2685</remote_id>
+                    <business_id type="int">103572</business_id>
+                    <date type="str">03-09-2014</date>
+                    <description type="str">Nul ne peut préparer, détenir en vue de la vente ou de la fourniture de services moyennant rémunération, recevoir, acheter pour fins de revente, mettre en vente ou en dépôt, vendre, donner à des fins promotionnelles, transporter, faire transporter ou accepter pour transport, tout produit destiné à la consommation humaine qui est impropre à cette consommation, qui est altéré de manière à le rendre impropre à cette consommation, dont l&apos;innocuité n&apos;est pas assurée pour cette consommation ou qui n&apos;est pas conforme aux exigences de la présente loi et des règlements.</description>
+                    <address type="str">2020A Rue Crescent, Montréal, Québec</address>
+                    <judgement_date type="str">14-10-2016</judgement_date>
+                    <establishment type="str">LE BOUSTAN</establishment>
+                    <amount type="int">3000</amount>
+                    <owner type="str">9257-1348 QUEBEC INC.</owner>
+                    <city type="str">Montréal</city>
+                    <status type="str">Fermé changement d&apos;exploitant</status>
+                    <status_date type="str">17-10-2016</status_date>
+                    <category type="str">Restaurant</category>
+                  </item>
+                </root>
+            text/csv:
+              example: |
+                id,remote_id,business_id,date,description,address,judgement_date,establishment,amount,owner,city,status,status_date,category
+                1,2645,219,14-05-2015,"Le produit altérable à la chaleur à l'exception des fruits et légumes frais entiers doit être refroidi sans retard et maintenu constamment à une température interne et ambiante ne dépassant pas 4C jusqu'à sa livraison au consommateur, sauf pendant le temps requis pour l'application d'un procédé de fabrication ou d'un traitement reconnu en industrie alimentaire et qui exige une plus haute température.","8591 Boul. Maurice-Duplessis, Montréal, Québec",29-03-2016,BOULANGERIE ET PATISSERIE LASALLE R.D.P. INC.,1000,BOULANGERIE ET PATISSERIE LASALLE R.D.P. INC.,Montréal,Ouvert,10-03-1993,Boulangerie
+        400:
+          body:
+            text/plain:
+              example: |
+                Bad request

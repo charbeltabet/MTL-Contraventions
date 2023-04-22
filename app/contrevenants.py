@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, Response, jsonify
+from flask import Blueprint, render_template, request, Response
 from app.models.violation import Violation
 from dicttoxml import dicttoxml
 import csv, io
@@ -15,14 +15,23 @@ def index():
 
 @bp.route('/contrevenants')
 def get_contrevenants():
-    if request.args.get('du') and request.args.get('au'):
-        return violations_response(Violation.count_by_establishment_between_dates(
-            start_date=request.args.get('du'),
-            end_date=request.args.get('au'),
-        ), request.content_type)
-    elif not request.args.get('du') and not request.args.get('au'):
-        return Violation.count_by_establishment()
-    return "Bad request", 400
+    if not request.args.get('du') and not request.args.get('au'):
+        return api_response(Violation.count_by_establishment(), request.content_type)
+
+    if not request.args.get('du') or not request.args.get('au'):
+        return "Bad request", 400
+    
+    counts_by_establishment = Violation.count_by_establishment_between_dates(
+        start_date=request.args.get('du'),
+        end_date=request.args.get('au'),
+    )
+
+    content_type = request.content_type
+    if content_type == 'text/html':
+        return render_template('contrevenants/index.html', establishments=counts_by_establishment)
+    
+    return api_response(counts_by_establishment, content_type)
+
 
 @bp.route('/contrevenants/search')
 def search_contrevenants():
@@ -34,20 +43,24 @@ def search_contrevenants():
         owner=request.args.get('owner'),
         address=request.args.get('address'),
     )
-    if (request.content_type == 'application/json'):
-        return [violation.to_dict() for violation in violations]
-    return render_template('contrevenants/search_results.html', violations=violations)
 
-def violations_response(violations, content_type):
+    content_type = request.content_type
+    if content_type == 'text/html':
+        return render_template('contrevenants/search_results.html', violations=violations)
+
+    violations_dicts_list = [violation.to_dict() for violation in violations]
+    return api_response(violations_dicts_list, content_type)
+
+def api_response(violations, content_type):
     if content_type == 'application/json':
         return violations
     elif content_type == 'application/xml':
-        xml = dicttoxml([violation.to_dict() for violation in violations])
-        return Response(xml, content_type='application/xml')
+        xml = dicttoxml(violations)
+        return Response(xml, content_type=content_type)
     elif content_type == 'text/csv':
         output = io.StringIO()
         writer = csv.writer(output)
-        writer.writerow(['Establishment', 'Violation Count'])
+        writer.writerow(violations[0].keys())
         for violation in violations:
-            writer.writerow([violation.establishment, violation.violation_count])
-        return Response(output.getvalue(), content_type='text/csv')
+            writer.writerow([value for value in violation.values()])
+        return Response(output.getvalue(), content_type=content_type)
