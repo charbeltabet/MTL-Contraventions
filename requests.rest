@@ -35,3 +35,18 @@ content-type: application/json
 
 GET http://127.0.0.1:5000/contrevenants/search?address=maurice&owner=LASALLE&establishment=patisserie
 content-type: text/csv
+
+###
+
+POST http://127.0.0.1:5000/auth/register
+content-type: application/json
+
+{
+  "email": "charbel@example.com",
+  "full_name": "John Doe",
+  "password": "password"
+}
+
+###
+
+POST http://127.0.0.1:5000/auth/login

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Nouveau usager</h1>
+<div>
+  <form class="row" method="POST">
+    <div class="col-md-5 col-lg-4">
+      <label>Nom complet</label>
+      <input type="text" class="form-control" name="full_name" required />
+      <label>Courriel</label>
+      <input type="email" class="form-control" name="email" required />
+      <label>Mot de passe</label>
+      <input type="password" class="form-control" name="password" minlength="8" required />
+      <input type="submit" class="btn btn-primary mt-3" value="Sign up" />
+    </div>
+    <div class="col-md-5 col-lg-4">
+      <div class="form-check">
+        <h3>Établissements à surveiller:</h3>
+        {% for establishment_name in establishment_names %}
+          <input class="form-check-input" type="checkbox" name="{{ establishment_name }}" id="flexCheckDefault">
+          <label class="form-check-label" for="flexCheckDefault">
+            {{ establishment_name }}
+          </label>
+        {% endfor %}
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

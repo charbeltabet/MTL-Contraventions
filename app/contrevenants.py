@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, Response
 from app.models.violation import Violation
-from dicttoxml import dicttoxml
-import csv, io
+from app.shared import api_response
 
 bp = Blueprint('contrevenants', __name__, url_prefix='/')
 
@@ -51,16 +50,3 @@ def search_contrevenants():
     violations_dicts_list = [violation.to_dict() for violation in violations]
     return api_response(violations_dicts_list, content_type)
 
-def api_response(violations, content_type):
-    if content_type == 'application/json':
-        return violations
-    elif content_type == 'application/xml':
-        xml = dicttoxml(violations)
-        return Response(xml, content_type=content_type)
-    elif content_type == 'text/csv':
-        output = io.StringIO()
-        writer = csv.writer(output)
-        writer.writerow(violations[0].keys())
-        for violation in violations:
-            writer.writerow([value for value in violation.values()])
-        return Response(output.getvalue(), content_type=content_type)

@@ -223,6 +223,18 @@ class Violation(object):
         count = cursor.fetchone()
         cursor.close()
         return count[0]
+    
+    @classmethod
+    def establishment_names(cls):
+        db = get_db()
+        cursor = db.execute(
+            """
+                SELECT DISTINCT establishment FROM violations
+            """
+        )
+        results = [row[0] for row in cursor.fetchall()]
+        cursor.close()
+        return results
 
     def to_dict(self):
         return {

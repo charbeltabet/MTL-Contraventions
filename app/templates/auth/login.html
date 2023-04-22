@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Connexion de l'utilisateur</h1>
+<div>
+  <form class="row" method="POST" >
+    <div class="col-md-5 col-lg-4">
+      <label>Courriel</label>
+      <input type="email" class="form-control" name="email" required />
+      <label>Mot de passe</label>
+      <input type="password" class="form-control" name="password" minlength="8" required />
+      <input type="submit" class="btn btn-primary mt-3" value="Login" />
+    </div>
+  </form>
+</div>
+{% endblock %}

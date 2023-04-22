@@ -1,7 +1,9 @@
 import os
 
 from flask import Flask
+from flask_login import LoginManager
 from apscheduler.schedulers.background import BackgroundScheduler
+from app.models.user import User
 
 def create_app(test_config=None):
     # create and configure the app
@@ -10,6 +12,15 @@ def create_app(test_config=None):
         SECRET_KEY='dev',
         DATABASE=os.path.join(app.instance_path, 'database.sqlite'),
     )
+
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.get_login'
+    login_manager.login_message = 'Please log in to access this page.'
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.find_by_id(user_id)
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -22,8 +33,9 @@ def create_app(test_config=None):
     db.init_app(app)
 
     # Register blueprints
-    from . import contrevenants
+    from . import contrevenants, auth
     app.register_blueprint(contrevenants.bp)
+    app.register_blueprint(auth.bp)
 
     # Schedule jobs
     schedule_jobs(app)

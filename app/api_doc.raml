@@ -133,3 +133,117 @@ version: v1
             text/plain:
               example: |
                 Bad request
+
+
+/auth:
+  /register:
+    get:
+      description: Returns the registration form.
+      responses:
+        200:
+          body:
+            application/html:
+              description: HTML form for registration.
+              example: |
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <title>Registration Form</title>
+                  </head>
+                  <body>
+                    <h1>Registration Form</h1>
+                    <form method="POST" action="/auth/register">
+                      <label for="full_name">Full Name</label>
+                      <input type="text" name="full_name" required><br><br>
+                      <label for="email">Email</label>
+                      <input type="email" name="email" required><br><br>
+                      <label for="password">Password</label>
+                      <input type="password" name="password" required><br><br>
+                      <button type="submit">Register</button>
+                    </form>
+                  </body>
+                </html>
+    post:
+      description: Creates a new user account.
+      body:
+        application/x-www-form-urlencoded:
+          formParameters:
+            full_name:
+              description: User's full name.
+              type: string
+              required: true
+            email:
+              description: User's email address.
+              type: string
+              required: true
+            password:
+              description: User's password.
+              type: string
+              required: true
+      responses:
+        200:
+          body:
+            application/json:
+              description: User account created successfully.
+              example: |
+                {
+                  "full_name": "John Doe",
+                  "email": "johndoe@example.com"
+                }
+        400:
+          body:
+            application/json:
+              description: Bad request or invalid input data.
+              example: |
+                {
+                  "error": "Invalid email"
+                }
+
+  /login:
+    get:
+      description: Returns the login form.
+      responses:
+        200:
+          body:
+            application/html:
+              description: HTML form for login.
+              example: |
+                <!DOCTYPE html>
+                <html>
+                  <head>
+                    <title>Login Form</title>
+                  </head>
+                  <body>
+                    <h1>Login Form</h1>
+                    <form method="POST" action="/auth/login">
+                      <label for="email">Email</label>
+                      <input type="email" name="email" required><br><br>
+                      <label for="password">Password</label>
+                      <input type="password" name="password" required><br><br>
+                      <button type="submit">Login</button>
+                    </form>
+                  </body>
+                </html>
+    post:
+      description: Authenticates a user and creates a new session.
+      body:
+        application/x-www-form-urlencoded:
+          formParameters:
+            email:
+              description: User's email address.
+              type: string
+              required: true
+            password:
+              description: User's password.
+              type: string
+              required: true
+      responses:
+        200:
+          body:
+            application/json:
+              description: User authenticated and session created.
+              example: |
+                {
+                  "full_name": "John Doe",
+                  "email": "johndoe@example.com",
+                  "created_at": "2023-04
